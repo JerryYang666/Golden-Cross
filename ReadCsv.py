@@ -27,17 +27,16 @@ class ReadCsv:
         """
         Initialize the class.
         """
-        if self.ANALYSIS_COL == 'Adj Close':
-            self.NOT_ANA_COL = 'Close'
-        else:
-            self.NOT_ANA_COL = 'Adj Close'
         self.sp500_list = self.read_sp500_list()
         self.all_stock_data = pd.read_csv(self.FOLDER_PATH + self.STOCK_PRICE_LIST, header=0, parse_dates=['Date'])
-        self.all_stock_data.drop(['Open', 'High', 'Low', 'Volume', self.NOT_ANA_COL], axis=1, inplace=True)
+        self.all_stock_data.drop(['Open', 'High', 'Low', 'Volume'], axis=1, inplace=True)  # drop useless columns
+        for stock in self.sp500_list:  # generate csvs for each stock
+            self.generate_stock_csv(stock)
+            print('Generated csv file for ' + stock)
 
     def read_sp500_list(self):
         """
-        Read the S&P500 list from csv file.
+        Read the S&P500 list from csv file. Since 500 rows is not a large number, no need to use pandas.
         :return: a list of S&P500 symbols.
         """
         sp500_list = []
@@ -53,9 +52,8 @@ class ReadCsv:
         :param stock_symbol: the symbol of the stock.
         """
         stock_data = self.all_stock_data[self.all_stock_data['Symbol'] == stock_symbol]
-        stock_data1 = stock_data[stock_data[self.ANALYSIS_COL].notna()]
-        print(stock_data1)
-        # stock_data['Average'] = stock_data['Close'].rolling(window=20).mean()
+        stock_data = stock_data[stock_data[self.ANALYSIS_COL].notna()]  # drop NaN rows
+        stock_data.to_csv(self.FOLDER_PATH + stock_symbol + '.csv', index=False)
 
     def plot_stock_price(self, stock_symbol):
         """

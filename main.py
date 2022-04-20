@@ -11,4 +11,4 @@ import pandas as pd
 
 if __name__ == '__main__':
     ReadCsv = ReadCsv.ReadCsv()
-    ReadCsv.plot_stock_price("T")
+
