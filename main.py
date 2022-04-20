@@ -7,8 +7,10 @@
 @time: 2022/4/19 22:14
 """
 import ReadCsv
+import SingleStock
 import pandas as pd
 
 if __name__ == '__main__':
-    ReadCsv = ReadCsv.ReadCsv()
+    # ReadCsv = ReadCsv.ReadCsv()
+    SingleStock = SingleStock.SingleStock("T")
 
