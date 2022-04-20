@@ -7,8 +7,8 @@
 @time: 2022/4/19 22:14
 """
 import ReadCsv
+import pandas as pd
 
 if __name__ == '__main__':
     ReadCsv = ReadCsv.ReadCsv()
-    print(ReadCsv.sp500_list)
-
+    ReadCsv.plot_stock_price("T")
