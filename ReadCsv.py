@@ -51,16 +51,27 @@ class ReadCsv:
         Generate a csv file for the specified stock. Calculate the daily average price and save it to a csv file.
         :param stock_symbol: the symbol of the stock.
         """
-        stock_data = self.all_stock_data[self.all_stock_data['Symbol'] == stock_symbol]
-        stock_data = stock_data[stock_data[self.ANALYSIS_COL].notna()]  # drop NaN rows
+        stock_data = self.single_stock_df(stock_symbol)
         stock_data.to_csv(self.FOLDER_PATH + stock_symbol + '.csv', index=False)
 
-    def plot_stock_price(self, stock_symbol):
+    def plot_stock_price(self, stock_symbol, start_date='2010-1-1', end_date='2023-1-1'):
         """
         Plot the stock price for the specified stock.
+        :param start_date: start date of the plot.
+        :param end_date: end date of the plot.
         :param stock_symbol: the symbol of the stock.
         """
-        stock_data = self.all_stock_data[self.all_stock_data['Symbol'] == stock_symbol]
-        stock_data = stock_data[stock_data[self.ANALYSIS_COL].notna()]
+        stock_data = self.single_stock_df(stock_symbol)
+        stock_data = stock_data[(stock_data['Date'] >= start_date) & (stock_data['Date'] <= end_date)]
         stock_data.plot(x='Date', y=self.ANALYSIS_COL)
         plt.show()
+
+    def single_stock_df(self, stock_symbol):
+        """
+        Get the dataframe of the specified stock. drop NaN rows.
+        :param stock_symbol: the symbol of the stock.
+        :return: the dataframe of the specified stock.
+        """
+        stock_data = self.all_stock_data[self.all_stock_data['Symbol'] == stock_symbol]
+        stock_data = stock_data[stock_data[self.ANALYSIS_COL].notna()]  # drop NaN rows
+        return stock_data

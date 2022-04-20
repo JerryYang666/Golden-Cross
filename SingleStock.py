@@ -7,6 +7,7 @@
 @time: 2022/4/20 00:38
 """
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 class SingleStock:
@@ -43,3 +44,29 @@ class SingleStock:
         :param days: moving average days
         """
         self.stock_data['Long MA'] = self.stock_data[self.ANALYSIS_COL].rolling(days).mean()
+
+    def find_cross_over(self):
+        """
+        find crossing of moving average, must use after calc_short_term_ma and calc_long_term_ma
+        There are two types of cross-over: short cross over long, short cross under long
+        for short cross over long, we expect the stock to rise, for short cross under long, we expect the stock to fall
+        """
+        pass
+
+    def determine_rise_or_fall(self, days):
+        """
+        determine rise or fall the in the specified days after cross-over
+        :param days: days to determine rise or fall
+        """
+        pass
+
+    def plot_stock(self, start_date='2010-1-1', end_date='2023-1-1'):
+        """
+        plot stock data
+        :param start_date: start date of plot
+        :param end_date: end date of plot
+        """
+        plot_data = self.stock_data[(self.stock_data['Date'] >= start_date) & (self.stock_data['Date'] <= end_date)]
+        plot_data.plot(x='Date', y=[self.ANALYSIS_COL, 'Short MA', 'Long MA'])
+        plt.legend([self.stock_symbol + ' Price', 'Short MA', 'Long MA'])
+        plt.show()
