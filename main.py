@@ -11,6 +11,6 @@ import SingleStock
 import pandas as pd
 
 if __name__ == '__main__':
-    # ReadCsv = ReadCsv.ReadCsv()
-    SingleStock = SingleStock.SingleStock("T")
+    # read_csv = ReadCsv.ReadCsv()
+    single_stock = SingleStock.SingleStock("T")
 

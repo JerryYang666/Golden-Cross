@@ -29,5 +29,17 @@ class SingleStock:
         self.stock_symbol = stock_symbol
         self.stock_data = pd.read_csv(self.FOLDER_PATH + stock_symbol + '.csv', header=0, parse_dates=['Date'])
         self.stock_data.drop(['Symbol', self.NOT_ANA_COL], axis=1, inplace=True)  # drop column not used for analysis
-        print(self.stock_data)
 
+    def calc_short_term_ma(self, days):
+        """
+        calculate short term moving average
+        :param days: moving average days
+        """
+        self.stock_data['Short MA'] = self.stock_data[self.ANALYSIS_COL].rolling(days).mean()
+
+    def calc_long_term_ma(self, days):
+        """
+        calculate long term moving average
+        :param days: moving average days
+        """
+        self.stock_data['Long MA'] = self.stock_data[self.ANALYSIS_COL].rolling(days).mean()
