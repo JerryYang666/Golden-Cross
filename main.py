@@ -12,7 +12,9 @@ import ReadCsv
 import SingleStock
 import pandas as pd
 import StockAnalysis
+import time
 
 if __name__ == '__main__':
-    stock_analysis = StockAnalysis.StockAnalysis(20,100,4)
-
+    start_time = time.time()
+    stock_analysis = StockAnalysis.StockAnalysis()
+    print("--- %s seconds ---" % (time.time() - start_time))

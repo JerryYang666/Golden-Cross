@@ -30,18 +30,18 @@ class StockAnalysis:
         if not path.exists(read_csv.FOLDER_PATH + "T.csv"):
             read_csv.generate_csv()
         self.sp500_list = read_csv.sp500_list
-        read_csv.plot_stock_price("AAPL",'2020-02-01', '2020-07-01')
-        self.analysis()
+        print(self.analysis())
 
     def analysis(self):
         """
         Analysis all the stocks with the given parameters and get the result.
         :return: the result of analysis
         """
-        result = []
+        result = {}
         for stock in self.sp500_list:
             single_stock = SingleStock.SingleStock(stock)
-            self.analysis_single_stock(single_stock)
+            result[stock] = self.analysis_single_stock(single_stock)
+            print(f'{stock}: {result[stock]}')
             break
         return result
 
@@ -51,6 +51,5 @@ class StockAnalysis:
         single_stock.find_cross_over()
         single_stock.determine_rise_or_fall(self.days_after_cross)
         result = single_stock.cross_list
-        single_stock.plot_stock('2020-02-01', '2020-07-01')
-        single_stock.plot_cross_over('2020-02-01', '2020-07-01')
-        print(result)
+        accuracy = round(result[result['Position'] == result['RF']].count()['Date'] / result.count()['Date'], 4)
+        return accuracy
