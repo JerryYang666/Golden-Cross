@@ -2,11 +2,12 @@
 # -*-coding:utf-8 -*-
 """
 @file: SingleStock.py
-@author: Jerry(Ruihuang)Yang
+@author: Jerry(Ruihuang)Yang, Vivian Luu
 @email: rxy216@case.edu
 @time: 2022/4/20 00:38
 """
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -48,10 +49,13 @@ class SingleStock:
     def find_cross_over(self):
         """
         find crossing of moving average, must use after calc_short_term_ma and calc_long_term_ma
-        There are two types of cross-over: short cross over long, short cross under long
-        for short cross over long, we expect the stock to rise, for short cross under long, we expect the stock to fall
+        position represents trading signal.
+        when position = 1, signal change 0 -> 1 or short cross above long and stock expect to rise or buy call
+        when position = -1, signal change 1 -> 0 or short cross under long and stock expect to fall or sell call
         """
-        pass
+        self.stock_data['Signal'] = 0.0
+        self.stock_data['Signal'] = np.where(self.stock_data['Short MA'] > self.stock_data['Long MA'], 1.0, 0.0)
+        self.stock_data['Position'] = self.stock_data['Signal'].diff()
 
     def determine_rise_or_fall(self, days):
         """
@@ -60,13 +64,49 @@ class SingleStock:
         """
         pass
 
+    def plot_cross_over(self, start_date='2010-1-1', end_date='2023-1-1'):
+        """
+        plot cross over signal
+        """
+        plot_data = self.filter_date(start_date, end_date)
+        plt.figure(figsize=(20, 10))
+        plot_data.plot(x='Date',
+                       y=[self.ANALYSIS_COL, 'Short MA', 'Long MA'],
+                       color=['k', 'b', 'c'],
+                       label=[self.ANALYSIS_COL + ' Price', 'Short MA', 'Long MA'])
+        plt.plot(plot_data['Date'][plot_data['Position'] == 1],
+                 plot_data['Short MA'][plot_data['Position'] == 1],
+                 '^',
+                 markersize=7,
+                 color='g',
+                 label='buy')
+        plt.plot(plot_data['Date'][plot_data['Position'] == -1],
+                 plot_data['Short MA'][plot_data['Position'] == -1],
+                 'v',
+                 markersize=7,
+                 color='r',
+                 label='sell')
+        plt.ylabel('Price in USD', fontsize=15)
+        plt.xlabel('Date', fontsize=15)
+        plt.legend()
+        plt.grid()
+        plt.show()
+
     def plot_stock(self, start_date='2010-1-1', end_date='2023-1-1'):
         """
         plot stock data
         :param start_date: start date of plot
         :param end_date: end date of plot
         """
-        plot_data = self.stock_data[(self.stock_data['Date'] >= start_date) & (self.stock_data['Date'] <= end_date)]
+        plot_data = self.filter_date(start_date, end_date)
         plot_data.plot(x='Date', y=[self.ANALYSIS_COL, 'Short MA', 'Long MA'])
         plt.legend([self.stock_symbol + ' Price', 'Short MA', 'Long MA'])
         plt.show()
+
+    def filter_date(self, start_date='2010-1-1', end_date='2023-1-1'):
+        """
+        filter data by date
+        :param start_date: start date of plot
+        :param end_date: end date of plot
+        """
+        return self.stock_data[(self.stock_data['Date'] >= start_date) & (self.stock_data['Date'] <= end_date)]

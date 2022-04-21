@@ -15,6 +15,7 @@ if __name__ == '__main__':
     single_stock = SingleStock.SingleStock("T")
     single_stock.calc_short_term_ma(20)
     single_stock.calc_long_term_ma(100)
-    single_stock.plot_stock('2020-01-01', '2020-04-19')
-    print(single_stock.stock_data)
+    single_stock.find_cross_over()
+    single_stock.plot_stock()
+    single_stock.plot_cross_over('2020-01-01', '2021-01-01')
 
