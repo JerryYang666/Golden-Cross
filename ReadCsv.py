@@ -30,9 +30,6 @@ class ReadCsv:
         self.sp500_list = self.read_sp500_list()
         self.all_stock_data = pd.read_csv(self.FOLDER_PATH + self.STOCK_PRICE_LIST, header=0, parse_dates=['Date'])
         self.all_stock_data.drop(['Open', 'High', 'Low', 'Volume'], axis=1, inplace=True)  # drop useless columns
-        for stock in self.sp500_list:  # generate csvs for each stock
-            self.generate_stock_csv(stock)
-            print('Generated csv file for ' + stock)
 
     def read_sp500_list(self):
         """
@@ -53,6 +50,14 @@ class ReadCsv:
         """
         stock_data = self.single_stock_df(stock_symbol)
         stock_data.to_csv(self.FOLDER_PATH + stock_symbol + '.csv', index=False)
+
+    def generate_csv(self):
+        """
+        Generate a csv file for each of the stocks.
+        """
+        for stock in self.sp500_list:  # generate csvs for each stock
+            self.generate_stock_csv(stock)
+            print('Generated csv file for ' + stock)
 
     def plot_stock_price(self, stock_symbol, start_date='2010-1-1', end_date='2023-1-1'):
         """
