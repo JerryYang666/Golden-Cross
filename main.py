@@ -16,5 +16,13 @@ import time
 
 if __name__ == '__main__':
     start_time = time.time()
-    stock_analysis = StockAnalysis.StockAnalysis()
+    stock_analysis = StockAnalysis.StockAnalysis(17, 100, 6)
     print("--- %s seconds ---" % (time.time() - start_time))
+    """
+    single_stock = SingleStock.SingleStock("T")
+    single_stock.calc_short_term_ma(20)
+    single_stock.calc_long_term_ma(100)
+    single_stock.find_cross_over()
+    single_stock.plot_cross_over()
+    single_stock.plot_stock()
+    """

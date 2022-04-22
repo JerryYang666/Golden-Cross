@@ -30,7 +30,8 @@ class StockAnalysis:
         if not path.exists(read_csv.FOLDER_PATH + "T.csv"):
             read_csv.generate_csv()
         self.sp500_list = read_csv.sp500_list
-        print(self.analysis())
+        analysis_result = self.analysis()
+        print(sum(analysis_result.values())/len(analysis_result))
 
     def analysis(self):
         """
@@ -42,10 +43,14 @@ class StockAnalysis:
             single_stock = SingleStock.SingleStock(stock)
             result[stock] = self.analysis_single_stock(single_stock)
             print(f'{stock}: {result[stock]}')
-            break
         return result
 
     def analysis_single_stock(self, single_stock):
+        """
+        do the analysis process for one stock and calculate the accuracy
+        :param single_stock: an instance of SingleStock.py
+        :return: the prediction accuracy of this stock
+        """
         single_stock.calc_short_term_ma(self.short_term_days)
         single_stock.calc_long_term_ma(self.long_term_days)
         single_stock.find_cross_over()
