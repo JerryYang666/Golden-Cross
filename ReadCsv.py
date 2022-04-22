@@ -8,8 +8,8 @@
 """
 import csv
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+from os import path
 
 
 class ReadCsv:
@@ -30,6 +30,8 @@ class ReadCsv:
         self.sp500_list = self.read_sp500_list()
         self.all_stock_data = pd.read_csv(self.FOLDER_PATH + self.STOCK_PRICE_LIST, header=0, parse_dates=['Date'])
         self.all_stock_data.drop(['Open', 'High', 'Low', 'Volume'], axis=1, inplace=True)  # drop useless columns
+        if not path.exists(self.FOLDER_PATH + "T.csv"):
+            self.generate_csv()
 
     def read_sp500_list(self):
         """

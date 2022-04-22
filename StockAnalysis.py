@@ -6,9 +6,7 @@
 @email: rxy216@case.edu
 @time: 2022/4/21 18:40
 """
-import ReadCsv
 import SingleStock
-from os import path
 
 
 class StockAnalysis:
@@ -16,7 +14,7 @@ class StockAnalysis:
     Analysis all the stocks with the given parameters and get the result.
     """
 
-    def __init__(self, short_term_days=20, long_term_days=100, days_after_cross=10):
+    def __init__(self, short_term_days=20, long_term_days=100, days_after_cross=10, sp500_list=None):
         """
         Initialize the analysis with the set of given parameters
         :param short_term_days: the length of short term moving average
@@ -26,12 +24,9 @@ class StockAnalysis:
         self.short_term_days = short_term_days
         self.long_term_days = long_term_days
         self.days_after_cross = days_after_cross
-        read_csv = ReadCsv.ReadCsv()
-        if not path.exists(read_csv.FOLDER_PATH + "T.csv"):
-            read_csv.generate_csv()
-        self.sp500_list = read_csv.sp500_list
+        self.sp500_list = sp500_list
         analysis_result = self.analysis()
-        print(sum(analysis_result.values())/len(analysis_result))
+        self.accuracy = sum(analysis_result.values())/len(analysis_result)
 
     def analysis(self):
         """
@@ -42,7 +37,6 @@ class StockAnalysis:
         for stock in self.sp500_list:
             single_stock = SingleStock.SingleStock(stock)
             result[stock] = self.analysis_single_stock(single_stock)
-            print(f'{stock}: {result[stock]}')
         return result
 
     def analysis_single_stock(self, single_stock):

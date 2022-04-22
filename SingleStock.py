@@ -17,8 +17,8 @@ class SingleStock:
     """
 
     FOLDER_PATH = 'sp500/'  # relative folder path for all csvs
-    ANALYSIS_COL = 'Close'  # column name for analysis (Adj Close/Close)
-    RF_AVG_RANGE = 5  # average calculation range for determining rise or fall
+    ANALYSIS_COL = 'Adj Close'  # column name for analysis (Adj Close/Close)
+    RF_AVG_RANGE = 2  # average calculation range for determining rise or fall
 
     def __init__(self, stock_symbol):
         """
